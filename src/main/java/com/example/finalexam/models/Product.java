@@ -1,7 +1,7 @@
 package com.example.finalexam.models;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -17,7 +17,9 @@ import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
-@Getter @Setter @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "products")
 public class Product {
     @Id
@@ -53,4 +55,13 @@ public class Product {
 
     @Column(name = "deleted_at")
     private Date deletedAt;
+
+    public Product(String code, String name, String description, Integer qty, Integer price, Category category) {
+        this.code = code;
+        this.name = name;
+        this.description = description;
+        this.qty = qty;
+        this.price = price;
+        this.category = category;
+    }
 }
