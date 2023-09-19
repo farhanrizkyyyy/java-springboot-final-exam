@@ -1,8 +1,11 @@
 package com.example.finalexam.models;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +19,9 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Getter @Setter @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "categories")
 public class Category {
     @Id
@@ -29,15 +34,23 @@ public class Category {
     @Column(name = "name")
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "category")
-    private List<Product> products;
+    private List<Product> products = new ArrayList<>();
 
+    @CreationTimestamp
     @Column(name = "created_at")
     private Date createdAt;
 
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
 
     @Column(name = "deleted_at")
     private Date deletedAt;
+
+    public Category(String code, String name) {
+        this.code = code;
+        this.name = name;
+    }
 }
