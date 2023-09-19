@@ -48,27 +48,35 @@ public class EmployeeService {
     }
 
     public EmployeeResponse createEmployee(EmployeeRequest request) {
-        String employeeName = Utility.capitalizeFirstLetter(request.getName());
+        String employeeName = Utility.capitalizeFirstLetter(request.getName().trim());
+        boolean isPhoneValid = Utility.validatePhoneNumber(request.getPhone().trim());
 
-        Employee newEmployee = new Employee(generateCode(), employeeName, request.getPhone());
-        employeeRepository.save(newEmployee);
-        responseMessage = "Employee successfully added";
+        if (isPhoneValid) {
+            Employee newEmployee = new Employee(generateCode(), employeeName, request.getPhone());
+            employeeRepository.save(newEmployee);
+            responseMessage = "Employee successfully added";
 
-        return new EmployeeResponse(newEmployee);
+            return new EmployeeResponse(newEmployee);
+        } else responseMessage = "Phone must be a 10-13 digit number";
+
+        return null;
     }
 
     public EmployeeResponse updateEmployee(String code, EmployeeRequest request) {
         Employee target = employeeRepository.findOneByCodeAndDeletedAtIsNull(code.toUpperCase());
+        boolean isPhoneValid = Utility.validatePhoneNumber(request.getPhone().trim());
 
         if (target != null) {
-            String newEmployeeName = Utility.capitalizeFirstLetter(request.getName());
+            if (isPhoneValid) {
+                String newEmployeeName = Utility.capitalizeFirstLetter(request.getName().trim());
 
-            target.setName(newEmployeeName);
-            target.setPhone(request.getPhone());
-            employeeRepository.save(target);
-            responseMessage = "Employee successfully updated";
+                target.setName(newEmployeeName);
+                target.setPhone(request.getPhone().trim());
+                employeeRepository.save(target);
+                responseMessage = "Employee successfully updated";
 
-            return new EmployeeResponse(target);
+                return new EmployeeResponse(target);
+            } else responseMessage = "Phone must be a 10-13 digit number";
         } else responseMessage = "Cannot find employee with code " + code.toUpperCase();
 
         return null;
