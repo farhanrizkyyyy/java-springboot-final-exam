@@ -1,6 +1,8 @@
 package com.example.finalexam.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -19,6 +21,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @Table(name = "categories")
 public class Category {
     @Id
@@ -31,6 +34,7 @@ public class Category {
     @Column(name = "name")
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "category")
     private List<Product> products = new ArrayList<>();
 
