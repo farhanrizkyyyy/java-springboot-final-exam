@@ -93,27 +93,41 @@ public class ProductService {
 
     public ProductResponse updateProduct(String code, ProductRequest request) {
         Product target = productRepository.findOneByCodeAndDeletedAtIsNull(code.toUpperCase());
-        Category categoryTarget = categoryRepository.findOneByIdAndDeletedAtIsNull(request.getCategoryId());
 
         if (target != null) {
+            int qty = request.getQty();
+            int price = request.getPrice();
+
+            if (qty < 0) responseMessage = "Cannot assign negative number to product qty";
+            else if (price < 0) responseMessage = "Cannot assign negative number to product price";
+            else {
+                String newProductName = Utility.capitalizeFirstLetter(request.getName());
+
+                target.setName(newProductName);
+                target.setDescription(request.getDescription());
+                target.setPrice(request.getPrice());
+                target.setQty(request.getQty());
+                responseMessage = "Product successfully updated";
+                productRepository.save(target);
+
+                return new ProductResponse(target);
+            }
+        } else responseMessage = "Cannot find product with code " + code.toUpperCase();
+
+        return null;
+    }
+
+    public ProductResponse updateProductCategory(String code, ProductRequest request) {
+        Product productTarget = productRepository.findOneByCodeAndDeletedAtIsNull(code.toUpperCase());
+        Category categoryTarget = categoryRepository.findOneByIdAndDeletedAtIsNull(request.getCategoryId());
+
+        if (productTarget != null) {
             if (categoryTarget != null) {
-                int qty = request.getQty();
-                int price = request.getPrice();
+                productTarget.setCategory(categoryTarget);
+                productRepository.save(productTarget);
 
-                if (qty < 0) responseMessage = "Cannot assign negative number to product qty";
-                else if (price < 0) responseMessage = "Cannot assign negative number to product price";
-                else {
-                    String newProductName = Utility.capitalizeFirstLetter(request.getName());
-
-                    target.setName(newProductName);
-                    target.setDescription(request.getDescription());
-                    target.setPrice(request.getPrice());
-                    target.setQty(request.getQty());
-                    responseMessage = "Product successfully updated";
-                    productRepository.save(target);
-
-                    return new ProductResponse(target);
-                }
+                responseMessage = productTarget.getName() + " category successfully changed to " + categoryTarget.getName();
+                return new ProductResponse(productTarget);
             } else responseMessage = "Cannot find category with ID " + request.getCategoryId();
         } else responseMessage = "Cannot find product with code " + code.toUpperCase();
 
