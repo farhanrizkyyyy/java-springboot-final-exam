@@ -4,10 +4,12 @@ import com.example.finalexam.dto.requests.OrderRequest;
 import com.example.finalexam.dto.responses.OrderDateRangeResponse;
 import com.example.finalexam.dto.responses.OrderResponse;
 import com.example.finalexam.models.Employee;
+import com.example.finalexam.models.Member;
 import com.example.finalexam.models.Order;
 import com.example.finalexam.models.Payment;
 import com.example.finalexam.models.Product;
 import com.example.finalexam.repositories.EmployeeRepository;
+import com.example.finalexam.repositories.MemberRepository;
 import com.example.finalexam.repositories.OrderRepository;
 import com.example.finalexam.repositories.PaymentRepository;
 import com.example.finalexam.repositories.ProductRepository;
@@ -35,6 +37,9 @@ public class OrderService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
     private String responseMessage;
 
     public String getResponseMessage() {
@@ -221,17 +226,23 @@ public class OrderService {
             Product product9 = productRepository.findOneByIdAndDeletedAtIsNull(9L);
             Product product10 = productRepository.findOneByIdAndDeletedAtIsNull(10L);
 
+            Member member1 = memberRepository.findOneByIdAndDeletedAtIsNull(1L);
+            Member member2 = memberRepository.findOneByIdAndDeletedAtIsNull(2L);
+            Member member3 = memberRepository.findOneByIdAndDeletedAtIsNull(3L);
+            Member member4 = memberRepository.findOneByIdAndDeletedAtIsNull(4L);
+            Member member5 = memberRepository.findOneByIdAndDeletedAtIsNull(5L);
+
             List<Order> orders = new ArrayList<>(Arrays.asList(
-                    new Order("OR001", 15000, null, employeeRepository.findOneByIdAndDeletedAtIsNull(1L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY001")),
+                    new Order("OR001", 15000, member1, employeeRepository.findOneByIdAndDeletedAtIsNull(1L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY001")),
                     new Order("OR002", 30000, null, employeeRepository.findOneByIdAndDeletedAtIsNull(4L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY002")),
-                    new Order("OR003", 30000, null, employeeRepository.findOneByIdAndDeletedAtIsNull(2L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY003")),
+                    new Order("OR003", 30000, member2, employeeRepository.findOneByIdAndDeletedAtIsNull(2L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY003")),
                     new Order("OR004", 110000, null, employeeRepository.findOneByIdAndDeletedAtIsNull(1L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY004")),
-                    new Order("OR005", 45000, null, employeeRepository.findOneByIdAndDeletedAtIsNull(8L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY005")),
+                    new Order("OR005", 45000, member1, employeeRepository.findOneByIdAndDeletedAtIsNull(8L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY005")),
                     new Order("OR006", 15000, null, employeeRepository.findOneByIdAndDeletedAtIsNull(7L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY006")),
-                    new Order("OR007", 85000, null, employeeRepository.findOneByIdAndDeletedAtIsNull(5L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY007")),
-                    new Order("OR008", 110000, null, employeeRepository.findOneByIdAndDeletedAtIsNull(4L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY008")),
+                    new Order("OR007", 85000, member3, employeeRepository.findOneByIdAndDeletedAtIsNull(5L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY007")),
+                    new Order("OR008", 110000, member5, employeeRepository.findOneByIdAndDeletedAtIsNull(4L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY008")),
                     new Order("OR009", 70000, null, employeeRepository.findOneByIdAndDeletedAtIsNull(2L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY009")),
-                    new Order("OR010", 40000, null, employeeRepository.findOneByIdAndDeletedAtIsNull(1L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY010"))
+                    new Order("OR010", 40000, member4, employeeRepository.findOneByIdAndDeletedAtIsNull(1L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY010"))
             ));
 
             List<Payment> payments = new ArrayList<>(Arrays.asList(
