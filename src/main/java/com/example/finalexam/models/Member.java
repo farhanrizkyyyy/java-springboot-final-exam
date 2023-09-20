@@ -18,7 +18,9 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Getter @Setter @AllArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
 @Table(name = "members")
 public class Member {
     @Id
@@ -51,4 +53,11 @@ public class Member {
 
     @Column(name = "deleted_at")
     private Date deletedAt;
+
+    public Member(String code, String name, String phone, String address) {
+        this.code = code;
+        this.name = name;
+        this.phone = phone;
+        this.address = address;
+    }
 }
