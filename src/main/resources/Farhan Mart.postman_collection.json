@@ -1,0 +1,580 @@
+{
+	"info": {
+		"_postman_id": "7530e1d1-343f-4072-aee2-0f0da18430c9",
+		"name": "Farhan Mart",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17402800"
+	},
+	"item": [
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "Get Product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local_url}}/products",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "pr004",
+									"disabled": true
+								},
+								{
+									"key": "category_id",
+									"value": "542",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test\",\n    \"description\": \"Test description\",\n    \"qty\": 50,\n    \"price\": 15000,\n    \"category_id\": 54\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local_url}}/products",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product Data",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"halow\",\n    \"description\" : \"halow halow bandung\",\n    \"price\": 99000,\n    \"qty\": 5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local_url}}/products/pr005",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"products",
+								"pr005"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product Category",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"category_id\": 543\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local_url}}/products/pr005",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"products",
+								"pr005"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{local_url}}/products/pr004",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"products",
+								"pr004"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transaction",
+			"item": [
+				{
+					"name": "Get Order",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local_url}}/orders",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"orders"
+							],
+							"query": [
+								{
+									"key": "employee_id",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "code",
+									"value": "or001",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order by Date Range",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local_url}}/orders/date?from=2023-07-01&until=2023-09-22",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"orders",
+								"date"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "2023-07-01"
+								},
+								{
+									"key": "until",
+									"value": "2023-09-22"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order by Member ID and Date Range",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local_url}}/orders/date/member?from=2023-07-01&until=2023-09-22&member_id=1",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"orders",
+								"date",
+								"member"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "2023-07-01"
+								},
+								{
+									"key": "until",
+									"value": "2023-09-22"
+								},
+								{
+									"key": "member_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"total_amount\": 10000,\n    \"total_paid\": 15000,\n    \"member_id\": null,\n    \"employee_id\": 4,\n    \"product_ids\": [1]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local_url}}/orders",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Order",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{local_url}}/orders/or001",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"orders",
+								"or001"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Member",
+			"item": [
+				{
+					"name": "Get Member",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local_url}}/members?code=mm001",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"members"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "mm001"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Member",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"test\",\n    \"phone\": \"1111111112\",\n    \"address\": \"Bandung\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local_url}}/members",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Member",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Farhan Rizky\",\n    \"phone\": \"11111111125\",\n    \"address\": \"Bandung\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local_url}}/members/mm001",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"members",
+								"mm001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Member",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{local_url}}/members/mm003",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"members",
+								"mm003"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product Category",
+			"item": [
+				{
+					"name": "Get Category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local_url}}/categories",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"categories"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "cg003",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local_url}}/categories",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"coba\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local_url}}/categories/cg004",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"categories",
+								"cg004"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Category",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{local_url}}/categories/cg011",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"categories",
+								"cg011"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employee",
+			"item": [
+				{
+					"name": "Get Employee",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local_url}}/employees",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"employees"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "em015",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Employee",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"test\",\n    \"phone\": \"11111111125435\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local_url}}/employees",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Employee",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Employee Farhan\",\n    \"phone\": \"432543\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local_url}}/employees/em004",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"employees",
+								"em004"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Employee",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{local_url}}/employees/em004",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"employees",
+								"em004"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
