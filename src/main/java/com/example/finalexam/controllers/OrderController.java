@@ -54,6 +54,14 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @GetMapping("/date/member")
+    public ResponseEntity<ApiResponse> getOrdersByMemberIdAndDate(@RequestParam(name = "member_id") Long memberId, @RequestParam(name = "from") String from, @RequestParam(name = "until") String until) {
+        OrderDateRangeResponse order = orderService.getOrderByMemberIdDateRange(memberId, from, until);
+        ApiResponse response = new ApiResponse(orderService.getResponseMessage(), order);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     @PostMapping("")
     public ResponseEntity<ApiResponse> createOrder(@RequestBody OrderRequest request) {
         OrderResponse newOrder = orderService.createOrder(request);

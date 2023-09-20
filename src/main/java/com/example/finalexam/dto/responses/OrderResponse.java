@@ -1,6 +1,7 @@
 package com.example.finalexam.dto.responses;
 
 import com.example.finalexam.models.Employee;
+import com.example.finalexam.models.Member;
 import com.example.finalexam.models.Order;
 import com.example.finalexam.models.Payment;
 import com.example.finalexam.models.Product;
@@ -27,7 +28,7 @@ public class OrderResponse {
     private LocalDate orderDate;
 
     @JsonProperty("member")
-    private Long memberId;
+    private MemberResponse member;
 
     @JsonProperty("employee")
     private EmployeeOrderResponse employee;
@@ -44,7 +45,7 @@ public class OrderResponse {
         this.payment = assignPayment(order.getPayment());
         this.employee = assignEmployee(order.getEmployee());
         this.products = assignProducts(order.getProducts());
-        this.memberId = order.getMember() != null ? order.getMember().getId() : null;
+        this.member = order.getMember() != null ? assignMember(order.getMember()) : null;
     }
 
     private List<ProductOrderResponse> assignProducts(List<Product> products) {
@@ -66,5 +67,10 @@ public class OrderResponse {
     private EmployeeOrderResponse assignEmployee(Employee employee) {
         ModelMapper mapper = new ModelMapper();
         return mapper.map(employee, EmployeeOrderResponse.class);
+    }
+
+    private MemberResponse assignMember(Member member) {
+        ModelMapper mapper = new ModelMapper();
+        return mapper.map(member, MemberResponse.class);
     }
 }
