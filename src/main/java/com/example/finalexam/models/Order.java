@@ -1,5 +1,6 @@
 package com.example.finalexam.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -35,9 +37,9 @@ public class Order {
     @Column(name = "code")
     private String code;
 
-    @CreationTimestamp
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "order_date")
-    private Date orderDate;
+    private LocalDate orderDate = LocalDate.now();
 
     @Column(name = "total_amount")
     private Integer totalAmount;

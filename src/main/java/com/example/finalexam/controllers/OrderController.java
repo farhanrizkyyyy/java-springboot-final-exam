@@ -1,6 +1,7 @@
 package com.example.finalexam.controllers;
 
 import com.example.finalexam.dto.requests.OrderRequest;
+import com.example.finalexam.dto.responses.OrderDateRangeResponse;
 import com.example.finalexam.dto.responses.OrderResponse;
 import com.example.finalexam.models.ApiResponse;
 import com.example.finalexam.services.OrderService;
@@ -43,6 +44,14 @@ public class OrderController {
         response = new ApiResponse(orderService.getResponseMessage(), body);
 
         return ResponseEntity.status(httpStatus).body(response);
+    }
+
+    @GetMapping("/date")
+    public ResponseEntity<ApiResponse> getOrdersByDate(@RequestParam(name = "from") String from, @RequestParam(name = "until") String until) {
+        OrderDateRangeResponse order = orderService.getOrderByDateRange(from, until);
+        ApiResponse response = new ApiResponse(orderService.getResponseMessage(), order);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PostMapping("")
