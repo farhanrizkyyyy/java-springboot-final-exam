@@ -14,6 +14,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -43,6 +45,19 @@ public class OrderService {
 
         ModelMapper mapper = new ModelMapper();
         List<Order> orders = orderRepository.findAllByDeletedAtIsNullOrderByCreatedAtDesc();
+        List<OrderResponse> responses = Arrays.asList(mapper.map(orders, OrderResponse[].class));
+
+        if (orders.isEmpty()) responseMessage = "Order is empty";
+        else responseMessage = "Fetch order success";
+
+        return responses;
+    }
+
+    public List<OrderResponse> getOrderByDateRange(String date1, String date2) {
+        ModelMapper mapper = new ModelMapper();
+        LocalDate from = LocalDate.parse(date1, DateTimeFormatter.ofPattern(("yyyy-MM-dd")));
+        LocalDate until = LocalDate.parse(date2, DateTimeFormatter.ofPattern(("yyyy-MM-dd")));
+        List<Order> orders = orderRepository.findByDeletedAtIsNullAndOrderDateBetween(from, until);
         List<OrderResponse> responses = Arrays.asList(mapper.map(orders, OrderResponse[].class));
 
         if (orders.isEmpty()) responseMessage = "Order is empty";

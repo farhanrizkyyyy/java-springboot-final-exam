@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/orders")
 public class OrderController {
@@ -43,6 +45,14 @@ public class OrderController {
         response = new ApiResponse(orderService.getResponseMessage(), body);
 
         return ResponseEntity.status(httpStatus).body(response);
+    }
+
+    @GetMapping("/date")
+    public ResponseEntity<ApiResponse> getOrdersByDate(@RequestParam(name = "from") String from, @RequestParam(name = "until") String until) {
+        List<OrderResponse> orders = orderService.getOrderByDateRange(from, until);
+        ApiResponse response = new ApiResponse(orderService.getResponseMessage(), orders);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PostMapping("")

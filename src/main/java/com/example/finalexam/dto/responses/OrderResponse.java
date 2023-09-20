@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -24,7 +24,7 @@ public class OrderResponse {
     private String code;
 
     @JsonProperty("order_date")
-    private Date orderDate;
+    private LocalDate orderDate;
 
     @JsonProperty("member")
     private Long memberId;
