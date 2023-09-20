@@ -1,5 +1,6 @@
 package com.example.finalexam.dto.responses;
 
+import com.example.finalexam.models.Product;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,4 +20,10 @@ public class ProductOrderResponse {
 
     @JsonProperty("price")
     private Integer price;
+
+    public ProductOrderResponse(Product product) {
+        this.code = product.getCode();
+        this.name = product.getName();
+        this.price = product.getPrice();
+    }
 }

@@ -86,18 +86,28 @@ public class OrderService {
         Employee employeeTarget = employeeRepository.findOneByIdAndDeletedAtIsNull(request.getEmployeeId());
         List<Product> products = new ArrayList<>();
         boolean isProductExist = true;
+        boolean isProductAvailable = true;
 
         for (int i = 0; i < request.getProductIds().size(); i++) {
             Long productId = request.getProductIds().get(i);
             Product product = productRepository.findOneByIdAndDeletedAtIsNull(productId);
 
-            if (product != null) products.add(product);
-            else {
+            if (product != null) {
+                if (product.getQty() == 0) {
+                    isProductAvailable = false;
+                    responseMessage = product.getName() + " qty is 0";
+                } else {
+                    products.add(product);
+                    product.setQty(product.getQty() - 1);
+                    productRepository.save(product);
+                }
+            } else {
                 isProductExist = false;
                 responseMessage = "Cannot find product with ID " + productId;
             }
 
             if (!isProductExist) break;
+            if (!isProductAvailable) break;
         }
 
         if (employeeTarget != null) {
@@ -106,6 +116,7 @@ public class OrderService {
                     int change = totalPaid - totalAmount;
 
                     if (!isProductExist) return null;
+                    else if (!isProductAvailable) return null;
                     else {
                         Order newOrder = new Order(generateCode("order"), request.getTotalAmount(), null, employeeTarget, products, null);
                         Payment newPayment = new Payment(generateCode("payment"), totalAmount, totalPaid, change, newOrder);
