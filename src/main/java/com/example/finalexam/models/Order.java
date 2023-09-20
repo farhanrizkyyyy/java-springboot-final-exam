@@ -2,10 +2,12 @@ package com.example.finalexam.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +22,10 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Getter @Setter @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "orders")
 public class Order {
     @Id
@@ -29,6 +34,10 @@ public class Order {
 
     @Column(name = "code")
     private String code;
+
+    @CreationTimestamp
+    @Column(name = "order_date")
+    private Date orderDate;
 
     @Column(name = "total_amount")
     private Integer totalAmount;
@@ -41,10 +50,10 @@ public class Order {
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private Employee employee;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     private List<Product> products;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "payment_id")
     private Payment payment;
 
@@ -58,4 +67,12 @@ public class Order {
 
     @Column(name = "deleted_at")
     private Date deletedAt;
+
+    public Order(String code, Integer totalAmount, Member member, Employee employee, List<Product> products) {
+        this.code = code;
+        this.totalAmount = totalAmount;
+        this.member = member;
+        this.employee = employee;
+        this.products = products;
+    }
 }

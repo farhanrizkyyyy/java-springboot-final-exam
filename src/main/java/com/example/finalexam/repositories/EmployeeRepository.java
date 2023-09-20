@@ -9,4 +9,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     List<Employee> findAllByDeletedAtIsNullOrderByNameAsc();
 
     Employee findOneByCodeAndDeletedAtIsNull(String code);
+
+    Employee findOneByIdAndDeletedAtIsNull(Long id);
 }

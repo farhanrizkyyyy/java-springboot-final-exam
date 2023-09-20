@@ -154,9 +154,9 @@ public class ProductService {
         if (products.isEmpty()) return "PR001";
         else {
             String productIdAsString = String.valueOf(products.get(products.size() - 1).getId());
-            int lastproductId = Integer.parseInt(productIdAsString);
-            lastproductId++;
-            String codeDigit = String.format("%03d", lastproductId);
+            int lastProductId = Integer.parseInt(productIdAsString);
+            lastProductId++;
+            String codeDigit = String.format("%03d", lastProductId);
 
             return "PR" + codeDigit;
         }
