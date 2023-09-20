@@ -79,6 +79,31 @@ public class OrderService {
         return response;
     }
 
+    public OrderDateRangeResponse getOrderByMemberIdDateRange(Long memberId, String date1, String date2) {
+        ModelMapper mapper = new ModelMapper();
+        LocalDate from = LocalDate.parse(date1, DateTimeFormatter.ofPattern(("yyyy-MM-dd")));
+        LocalDate until = LocalDate.parse(date2, DateTimeFormatter.ofPattern(("yyyy-MM-dd")));
+        List<Order> orders = orderRepository.findByMemberIdAndDeletedAtIsNullAndOrderDateBetween(memberId, from, until);
+        List<OrderResponse> orderResponses = Arrays.asList(mapper.map(orders, OrderResponse[].class));
+        Member memberTarget = memberRepository.findOneByIdAndDeletedAtIsNull(memberId);
+        Integer totalIncome = 0;
+
+        if (memberTarget != null) {
+            for (OrderResponse orderResponse : orderResponses) {
+                totalIncome += orderResponse.getPayment().getTotalAmount();
+            }
+
+            OrderDateRangeResponse response = new OrderDateRangeResponse(orderResponses, totalIncome);
+
+            if (orders.isEmpty()) responseMessage = "Order is empty";
+            else responseMessage = "Fetch order success";
+
+            return response;
+        } else responseMessage = "Cannot find member with ID " + memberId;
+
+        return null;
+    }
+
     public List<OrderResponse> getOrdersByEmployeeId(Long employeeId) {
         Employee employeeTarget = employeeRepository.findOneByIdAndDeletedAtIsNull(employeeId);
 
