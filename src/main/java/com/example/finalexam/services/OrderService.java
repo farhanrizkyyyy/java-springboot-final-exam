@@ -1,6 +1,7 @@
 package com.example.finalexam.services;
 
 import com.example.finalexam.dto.requests.OrderRequest;
+import com.example.finalexam.dto.responses.OrderDateRangeResponse;
 import com.example.finalexam.dto.responses.OrderResponse;
 import com.example.finalexam.models.Employee;
 import com.example.finalexam.models.Order;
@@ -53,17 +54,24 @@ public class OrderService {
         return responses;
     }
 
-    public List<OrderResponse> getOrderByDateRange(String date1, String date2) {
+    public OrderDateRangeResponse getOrderByDateRange(String date1, String date2) {
         ModelMapper mapper = new ModelMapper();
         LocalDate from = LocalDate.parse(date1, DateTimeFormatter.ofPattern(("yyyy-MM-dd")));
         LocalDate until = LocalDate.parse(date2, DateTimeFormatter.ofPattern(("yyyy-MM-dd")));
         List<Order> orders = orderRepository.findByDeletedAtIsNullAndOrderDateBetween(from, until);
-        List<OrderResponse> responses = Arrays.asList(mapper.map(orders, OrderResponse[].class));
+        List<OrderResponse> orderResponses = Arrays.asList(mapper.map(orders, OrderResponse[].class));
+        Integer totalIncome = 0;
+
+        for (OrderResponse orderResponse : orderResponses) {
+            totalIncome += orderResponse.getPayment().getTotalAmount();
+        }
+
+        OrderDateRangeResponse response = new OrderDateRangeResponse(orderResponses, totalIncome);
 
         if (orders.isEmpty()) responseMessage = "Order is empty";
         else responseMessage = "Fetch order success";
 
-        return responses;
+        return response;
     }
 
     public List<OrderResponse> getOrdersByEmployeeId(Long employeeId) {

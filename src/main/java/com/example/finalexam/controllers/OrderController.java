@@ -1,6 +1,7 @@
 package com.example.finalexam.controllers;
 
 import com.example.finalexam.dto.requests.OrderRequest;
+import com.example.finalexam.dto.responses.OrderDateRangeResponse;
 import com.example.finalexam.dto.responses.OrderResponse;
 import com.example.finalexam.models.ApiResponse;
 import com.example.finalexam.services.OrderService;
@@ -15,8 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/orders")
@@ -49,8 +48,8 @@ public class OrderController {
 
     @GetMapping("/date")
     public ResponseEntity<ApiResponse> getOrdersByDate(@RequestParam(name = "from") String from, @RequestParam(name = "until") String until) {
-        List<OrderResponse> orders = orderService.getOrderByDateRange(from, until);
-        ApiResponse response = new ApiResponse(orderService.getResponseMessage(), orders);
+        OrderDateRangeResponse order = orderService.getOrderByDateRange(from, until);
+        ApiResponse response = new ApiResponse(orderService.getResponseMessage(), order);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
