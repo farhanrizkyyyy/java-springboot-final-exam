@@ -50,7 +50,7 @@ public class Order {
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private Employee employee;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany
     private List<Product> products;
 
     @OneToOne(cascade = {CascadeType.ALL})
@@ -68,11 +68,12 @@ public class Order {
     @Column(name = "deleted_at")
     private Date deletedAt;
 
-    public Order(String code, Integer totalAmount, Member member, Employee employee, List<Product> products) {
-        this.code = code;
-        this.totalAmount = totalAmount;
+    public Order(String code, Integer totalAmount, Member member, Employee employee, List<Product> products, Payment payment) {
+        this.payment = payment;
         this.member = member;
         this.employee = employee;
         this.products = products;
+        this.code = code;
+        this.totalAmount = totalAmount;
     }
 }

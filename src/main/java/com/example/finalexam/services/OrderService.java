@@ -39,6 +39,8 @@ public class OrderService {
     }
 
     public List<OrderResponse> getOrders() {
+        seed();
+
         ModelMapper mapper = new ModelMapper();
         List<Order> orders = orderRepository.findAllByDeletedAtIsNullOrderByCreatedAtDesc();
         List<OrderResponse> responses = Arrays.asList(mapper.map(orders, OrderResponse[].class));
@@ -105,7 +107,7 @@ public class OrderService {
 
                     if (!isProductExist) return null;
                     else {
-                        Order newOrder = new Order(generateCode("order"), request.getTotalAmount(), null, employeeTarget, products);
+                        Order newOrder = new Order(generateCode("order"), request.getTotalAmount(), null, employeeTarget, products, null);
                         Payment newPayment = new Payment(generateCode("payment"), totalAmount, totalPaid, change, newOrder);
 
                         newOrder.setPayment(newPayment);
@@ -170,5 +172,137 @@ public class OrderService {
         }
 
         return "";
+    }
+
+    private void seed() {
+        if (orderRepository.findAll().isEmpty()) {
+            Product product1 = productRepository.findOneByIdAndDeletedAtIsNull(1L);
+            Product product2 = productRepository.findOneByIdAndDeletedAtIsNull(2L);
+            Product product3 = productRepository.findOneByIdAndDeletedAtIsNull(3L);
+            Product product4 = productRepository.findOneByIdAndDeletedAtIsNull(4L);
+            Product product5 = productRepository.findOneByIdAndDeletedAtIsNull(5L);
+            Product product6 = productRepository.findOneByIdAndDeletedAtIsNull(6L);
+            Product product7 = productRepository.findOneByIdAndDeletedAtIsNull(7L);
+            Product product8 = productRepository.findOneByIdAndDeletedAtIsNull(8L);
+            Product product9 = productRepository.findOneByIdAndDeletedAtIsNull(9L);
+            Product product10 = productRepository.findOneByIdAndDeletedAtIsNull(10L);
+
+            List<Order> orders = new ArrayList<>(Arrays.asList(
+                    new Order("OR001", 15000, null, employeeRepository.findOneByIdAndDeletedAtIsNull(1L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY001")),
+                    new Order("OR002", 30000, null, employeeRepository.findOneByIdAndDeletedAtIsNull(4L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY002")),
+                    new Order("OR003", 30000, null, employeeRepository.findOneByIdAndDeletedAtIsNull(2L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY003")),
+                    new Order("OR004", 110000, null, employeeRepository.findOneByIdAndDeletedAtIsNull(1L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY004")),
+                    new Order("OR005", 45000, null, employeeRepository.findOneByIdAndDeletedAtIsNull(8L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY005")),
+                    new Order("OR006", 15000, null, employeeRepository.findOneByIdAndDeletedAtIsNull(7L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY006")),
+                    new Order("OR007", 85000, null, employeeRepository.findOneByIdAndDeletedAtIsNull(5L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY007")),
+                    new Order("OR008", 110000, null, employeeRepository.findOneByIdAndDeletedAtIsNull(4L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY008")),
+                    new Order("OR009", 70000, null, employeeRepository.findOneByIdAndDeletedAtIsNull(2L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY009")),
+                    new Order("OR010", 40000, null, employeeRepository.findOneByIdAndDeletedAtIsNull(1L), new ArrayList<>(), paymentRepository.findOneByCodeAndDeletedAtIsNull("PY010"))
+            ));
+
+            List<Payment> payments = new ArrayList<>(Arrays.asList(
+                    new Payment("PY001", 15000, 20000, 5000, orderRepository.findOneByCodeAndDeletedAtIsNull("OR001")),
+                    new Payment("PY002", 30000, 30000, 0, orderRepository.findOneByCodeAndDeletedAtIsNull("OR002")),
+                    new Payment("PY003", 30000, 50000, 20000, orderRepository.findOneByCodeAndDeletedAtIsNull("OR003")),
+                    new Payment("PY004", 110000, 150000, 40000, orderRepository.findOneByCodeAndDeletedAtIsNull("OR004")),
+                    new Payment("PY005", 45000, 50000, 5000, orderRepository.findOneByCodeAndDeletedAtIsNull("OR005")),
+                    new Payment("PY006", 15000, 15000, 0, orderRepository.findOneByCodeAndDeletedAtIsNull("OR006")),
+                    new Payment("PY007", 85000, 100000, 15000, orderRepository.findOneByCodeAndDeletedAtIsNull("OR007")),
+                    new Payment("PY008", 110000, 120000, 10000, orderRepository.findOneByCodeAndDeletedAtIsNull("OR008")),
+                    new Payment("PY009", 70000, 100000, 30000, orderRepository.findOneByCodeAndDeletedAtIsNull("OR009")),
+                    new Payment("PY010", 40000, 50000, 10000, orderRepository.findOneByCodeAndDeletedAtIsNull("OR010"))
+            ));
+
+            // set payment
+            orders.get(0).setPayment(payments.get(0));
+            orders.get(1).setPayment(payments.get(1));
+            orders.get(2).setPayment(payments.get(2));
+            orders.get(3).setPayment(payments.get(3));
+            orders.get(4).setPayment(payments.get(4));
+            orders.get(5).setPayment(payments.get(5));
+            orders.get(6).setPayment(payments.get(6));
+            orders.get(7).setPayment(payments.get(7));
+            orders.get(8).setPayment(payments.get(8));
+            orders.get(9).setPayment(payments.get(9));
+
+            // add product to order
+            orders.get(0).getProducts().add(product1);
+            orders.get(0).getProducts().add(product2);
+
+            orders.get(1).getProducts().add(product2);
+            orders.get(1).getProducts().add(product4);
+
+            orders.get(2).getProducts().add(product1);
+            orders.get(2).getProducts().add(product2);
+            orders.get(2).getProducts().add(product3);
+
+            orders.get(3).getProducts().add(product5);
+            orders.get(3).getProducts().add(product6);
+            orders.get(3).getProducts().add(product10);
+
+            orders.get(4).getProducts().add(product1);
+            orders.get(4).getProducts().add(product2);
+            orders.get(4).getProducts().add(product5);
+
+            orders.get(5).getProducts().add(product1);
+            orders.get(5).getProducts().add(product2);
+
+            orders.get(6).getProducts().add(product4);
+            orders.get(6).getProducts().add(product5);
+            orders.get(6).getProducts().add(product9);
+
+            orders.get(7).getProducts().add(product6);
+            orders.get(7).getProducts().add(product7);
+            orders.get(7).getProducts().add(product8);
+
+            orders.get(8).getProducts().add(product1);
+            orders.get(8).getProducts().add(product2);
+            orders.get(8).getProducts().add(product10);
+
+            orders.get(9).getProducts().add(product1);
+            orders.get(9).getProducts().add(product3);
+            orders.get(9).getProducts().add(product4);
+
+            // add order to product
+            product1.getOrders().add(orders.get(0));
+            product1.getOrders().add(orders.get(2));
+            product1.getOrders().add(orders.get(4));
+            product1.getOrders().add(orders.get(5));
+            product1.getOrders().add(orders.get(8));
+            product1.getOrders().add(orders.get(9));
+
+            product2.getOrders().add(orders.get(0));
+            product2.getOrders().add(orders.get(1));
+            product2.getOrders().add(orders.get(2));
+            product2.getOrders().add(orders.get(4));
+            product2.getOrders().add(orders.get(5));
+            product2.getOrders().add(orders.get(8));
+
+            product3.getOrders().add(orders.get(2));
+            product3.getOrders().add(orders.get(9));
+
+            product4.getOrders().add(orders.get(1));
+            product4.getOrders().add(orders.get(6));
+            product4.getOrders().add(orders.get(9));
+
+            product5.getOrders().add(orders.get(3));
+            product5.getOrders().add(orders.get(4));
+            product5.getOrders().add(orders.get(6));
+
+            product6.getOrders().add(orders.get(3));
+            product6.getOrders().add(orders.get(7));
+
+            product7.getOrders().add(orders.get(7));
+
+            product8.getOrders().add(orders.get(7));
+
+            product9.getOrders().add(orders.get(6));
+
+            product10.getOrders().add(orders.get(3));
+            product10.getOrders().add(orders.get(8));
+
+            orderRepository.saveAll(orders);
+            paymentRepository.saveAll(payments);
+        }
     }
 }

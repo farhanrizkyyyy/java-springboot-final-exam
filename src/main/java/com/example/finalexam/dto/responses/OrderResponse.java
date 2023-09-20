@@ -1,12 +1,15 @@
 package com.example.finalexam.dto.responses;
 
+import com.example.finalexam.models.Employee;
 import com.example.finalexam.models.Order;
+import com.example.finalexam.models.Payment;
 import com.example.finalexam.models.Product;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,37 +26,25 @@ public class OrderResponse {
     @JsonProperty("order_date")
     private Date orderDate;
 
-    @JsonProperty("total_amount")
-    private Integer totalAmount;
-
-    @JsonProperty("total_paid")
-    private Integer totalPaid;
-
-    @JsonProperty("change")
-    private Integer change;
-
-    @JsonProperty("member_id")
+    @JsonProperty("member")
     private Long memberId;
 
     @JsonProperty("employee")
-    private EmployeeResponse employeeResponse;
+    private EmployeeOrderResponse employee;
 
     @JsonProperty("payment")
-    private PaymentResponse paymentResponse;
+    private PaymentResponse payment;
 
     @JsonProperty("products")
-    private List<ProductOrderResponse> productResponses;
+    private List<ProductOrderResponse> products;
 
     public OrderResponse(Order order) {
         this.code = order.getCode();
         this.orderDate = order.getOrderDate();
-        this.totalAmount = order.getTotalAmount();
-        this.totalPaid = order.getPayment().getTotalPaid();
-        this.change = order.getPayment().getChange();
+        this.payment = assignPayment(order.getPayment());
+        this.employee = assignEmployee(order.getEmployee());
+        this.products = assignProducts(order.getProducts());
         this.memberId = order.getMember() != null ? order.getMember().getId() : null;
-        this.employeeResponse = new EmployeeResponse(order.getEmployee());
-        this.paymentResponse = new PaymentResponse(order.getPayment());
-        this.productResponses = assignProducts(order.getProducts());
     }
 
     private List<ProductOrderResponse> assignProducts(List<Product> products) {
@@ -65,5 +56,15 @@ public class OrderResponse {
         }
 
         return responses;
+    }
+
+    private PaymentResponse assignPayment(Payment payment) {
+        ModelMapper mapper = new ModelMapper();
+        return mapper.map(payment, PaymentResponse.class);
+    }
+
+    private EmployeeOrderResponse assignEmployee(Employee employee) {
+        ModelMapper mapper = new ModelMapper();
+        return mapper.map(employee, EmployeeOrderResponse.class);
     }
 }

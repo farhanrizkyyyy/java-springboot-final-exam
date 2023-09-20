@@ -32,7 +32,7 @@ public class ProductSeeder {
                     new Product("PR008", "Product 8", "Description 8", 20, 45_000, categoryRepository.findOneByIdAndDeletedAtIsNull(3L)),
                     new Product("PR009", "Product 9", "Description 9", 20, 50_000, categoryRepository.findOneByIdAndDeletedAtIsNull(4L)),
                     new Product("PR010", "Product 10", "Description 10", 20, 55_000, categoryRepository.findOneByIdAndDeletedAtIsNull(5L)),
-                    new Product("PR010", "Product 11", "Description 11", 20, 60_000, categoryRepository.findOneByIdAndDeletedAtIsNull(54L))
+                    new Product("PR011", "Product 11", "Description 11", 20, 60_000, categoryRepository.findOneByIdAndDeletedAtIsNull(54L))
             ));
 
             productRepository.saveAll(products);
