@@ -136,10 +136,12 @@ public class OrderService {
     public OrderResponse createOrder(OrderRequest request) {
         int totalPaid = request.getTotalPaid();
         Employee employeeTarget = employeeRepository.findOneByIdAndDeletedAtIsNull(request.getEmployeeId());
+        Member memberTarget = memberRepository.findOneByIdAndDeletedAtIsNull(request.getMemberId());
         List<Product> products = new ArrayList<>();
         boolean isProductExist = true;
         boolean isProductAvailable = true;
         int totalAmount = 0;
+
 
         for (int i = 0; i < request.getProductIds().size(); i++) {
             Long productId = request.getProductIds().get(i);
@@ -172,7 +174,7 @@ public class OrderService {
                     if (!isProductExist) return null;
                     else if (!isProductAvailable) return null;
                     else {
-                        Order newOrder = new Order(generateCode("order"), totalAmount, null, employeeTarget, products, null);
+                        Order newOrder = new Order(generateCode("order"), totalAmount, memberTarget, employeeTarget, products, null);
                         Payment newPayment = new Payment(generateCode("payment"), totalAmount, totalPaid, change, newOrder);
 
                         newOrder.setPayment(newPayment);
