@@ -134,12 +134,12 @@ public class OrderService {
     }
 
     public OrderResponse createOrder(OrderRequest request) {
-        int totalAmount = request.getTotalAmount();
         int totalPaid = request.getTotalPaid();
         Employee employeeTarget = employeeRepository.findOneByIdAndDeletedAtIsNull(request.getEmployeeId());
         List<Product> products = new ArrayList<>();
         boolean isProductExist = true;
         boolean isProductAvailable = true;
+        int totalAmount = 0;
 
         for (int i = 0; i < request.getProductIds().size(); i++) {
             Long productId = request.getProductIds().get(i);
@@ -152,6 +152,7 @@ public class OrderService {
                 } else {
                     products.add(product);
                     product.setQty(product.getQty() - 1);
+                    totalAmount += product.getPrice();
                     productRepository.save(product);
                 }
             } else {
@@ -171,7 +172,7 @@ public class OrderService {
                     if (!isProductExist) return null;
                     else if (!isProductAvailable) return null;
                     else {
-                        Order newOrder = new Order(generateCode("order"), request.getTotalAmount(), null, employeeTarget, products, null);
+                        Order newOrder = new Order(generateCode("order"), totalAmount, null, employeeTarget, products, null);
                         Payment newPayment = new Payment(generateCode("payment"), totalAmount, totalPaid, change, newOrder);
 
                         newOrder.setPayment(newPayment);
